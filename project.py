@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from io import BytesIO
 
-chan = botogram.channel("@kerod_chan", "6901794159:AAFGaxUs_CWvLARysrPG0zYcRgPz6BjaGms")
+chan = botogram.channel("@kerod_chan", "6901794159:AAFGaxUs_CWvLARysrPG0zYcRgPz6BjaGms") 
 
 def scrape_news():
     url = "http://www.aau.edu.et/blog/category/news/"
@@ -19,6 +19,7 @@ def scrape_news():
         description = description_content.p.text.strip()
         link = description_content.a['href']
 
+        # Extract image URL
         image_tag = article.find('img', class_='wp-post-image')
         image_url = image_tag['src'] if image_tag and 'src' in image_tag.attrs else None
 
@@ -33,9 +34,11 @@ for new in news:
     description = new['description']
     image_url = new.get('image_url', '')
 
+    # Send text
     chan.send(title)
     chan.send(description)
 
+    # Send image
     if image_url:
         image_response = requests.get(image_url)
         if image_response.status_code == 200:
